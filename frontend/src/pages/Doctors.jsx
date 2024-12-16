@@ -25,7 +25,7 @@ const Doctors = () => {
   
   return (
     <div>
-      <p className='text-gray-600 mt-4'>Browse through the doctors specialist.</p>
+      <p className='text-gray-600'>Browse through the doctors specialist.</p>
       <div className='flex flex-col sm:flex-row items-start gap-5 mt-5'>
           {/* Filter */}
         <div className='flex-col text-gray-600 text-sm'>
@@ -61,8 +61,8 @@ const Doctors = () => {
               ))}
           
         </div>
+        
       </div>
-      
     </div>
   )
 }
