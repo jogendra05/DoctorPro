@@ -22,7 +22,14 @@ const Appointment = () => {
 
 
   const getAvailableSlots = async () => {
+
     let today = new Date()
+
+    if (today.getHours() > 20) {
+      today.setDate(today.getDate() + 1);
+      today.setHours(8, 0, 0, 0); 
+    }
+    
     for (let i = 0; i < 7; i++){
       // getting date with index
       let currentDate = new Date(today)
@@ -84,7 +91,7 @@ const Appointment = () => {
           {/* ----------About----------- */}
           <div >
             <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>
-              About <img src={assets.info_icon} alt="" /></p>
+              About <img className='w-3.5' src={assets.info_icon} alt="" /></p>
             <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{docInfo.about}</p>
           </div>
           <p className=' text-gray-500 font-medium mt-4'>

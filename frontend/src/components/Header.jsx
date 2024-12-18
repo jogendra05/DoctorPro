@@ -18,7 +18,7 @@ const Header = () => {
             </a>
         </div>
         <div className='md:w-1/2 relative'>
-            <img className='w-full absolute md:bottom-0 h-auto rounded-lg' src={assets.header_img} alt="" />
+            <img className='w-full md:absolute md:bottom-0 h-auto rounded-lg' src={assets.header_img} alt="" />
         </div>
     </div>
   )
