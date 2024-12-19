@@ -5,7 +5,7 @@ export const DoctorContext = createContext()
 
 const DoctorContextProvider = (props) => {
 
-    value = {
+    const value = {
 
     }
 
@@ -15,3 +15,5 @@ const DoctorContextProvider = (props) => {
         </DoctorContext.Provider>
     )
 }
+
+export default DoctorContextProvider
