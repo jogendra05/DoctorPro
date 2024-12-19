@@ -15,7 +15,7 @@ const addDoctor = async (req, res) => {
 
         // checking for all data to add doctor
         if(!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address){
-            return res.json({success:false, message:'Missing Details'})
+            return res.json({success:false, message:'Missing Details'}) 
         }
 
         // validating email format
@@ -27,10 +27,10 @@ const addDoctor = async (req, res) => {
         if(password.length < 8){
             return res.json({success:false, message:'Please enter a strong password'})
         }
-
+        console.log(password)
         // hashing doctor password
-        const salt = bcrypt.genSalt(8)
-        const hashedPassword = bcrypt.hash(password, salt)
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
 
         // upload image to cloudinary
         const imageUpload = await cloudinary.uploader.upload(imageFile.path, {resource_type:'image'})
