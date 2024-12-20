@@ -7,10 +7,9 @@ export const AppContext = createContext();
 const AppContextProvider = (props) => {
   const [doctors, setDoctors] = useState([]);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const value = {
-    doctors,
-    backendUrl,
-  };
+  const [token, setToken] = useState(
+    localStorage.getItem("token") ? localStorage.getItem("token") : false
+  );
 
   const getDoctorsData = async () => {
     try {
@@ -24,6 +23,13 @@ const AppContextProvider = (props) => {
     } catch (error) {
       toast.error(error.message);
     }
+  };
+
+  const value = {
+    doctors,
+    backendUrl,
+    token,
+    setToken,
   };
 
   useEffect(() => {
