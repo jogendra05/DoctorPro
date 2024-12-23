@@ -10,9 +10,11 @@ const AdminContextProvider = (props) => {
   );
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [dashData, setDashData] = useState(false);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
+  // To get all Doctors
   const getAllDoctors = async () => {
     try {
       const { data } = await axios.post(
@@ -31,6 +33,7 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  // To change Doctors Availabilty
   const changeAvailability = async (docId) => {
     try {
       const { data } = await axios.post(
@@ -50,14 +53,14 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  // To get all Appointment
   const getAllAppointment = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/admin/appointments", {
         headers: { aToken },
       });
       if (data.success) {
-        setAppointments(data.appoints);
-        console.log(appointments);
+        setAppointments(data.appoints.reverse());
       } else {
         toast.error(data.message);
       }
@@ -66,6 +69,7 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  // To cancel the Appointment
   const cancelAppointment = async (appointmentId) => {
     try {
       const { data } = await axios.post(
@@ -74,10 +78,27 @@ const AdminContextProvider = (props) => {
         { headers: { aToken } }
       );
       if (data.success) {
-        toast.success(data.message)
-        getAllAppointment()
-      }else{
-        toast.error(data.message)
+        toast.success(data.message);
+        getAllAppointment();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  // To get Dashboard Data
+  const getDashData = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + "/api/admin/dashboard", {
+        headers: { aToken },
+      });
+      if (data.success) {
+        setDashData(data.dashData);
+        console.log(data.dashData);
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
@@ -94,7 +115,9 @@ const AdminContextProvider = (props) => {
     appointments,
     setAppointments,
     getAllAppointment,
-    cancelAppointment
+    cancelAppointment,
+    dashData,
+    getDashData,
   };
 
   return (
