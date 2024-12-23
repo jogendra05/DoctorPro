@@ -9,9 +9,10 @@ const AdminContextProvider = (props) => {
     localStorage.getItem("aToken") ? localStorage.getItem("aToken") : ""
   );
   const [doctors, setDoctors] = useState([]);
+  const [appointments, setAppointments] = useState([]);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  
+
   const getAllDoctors = async () => {
     try {
       const { data } = await axios.post(
@@ -22,7 +23,6 @@ const AdminContextProvider = (props) => {
 
       if (data.success) {
         setDoctors(data.doctors);
-        
       } else {
         toast.error(data.message);
       }
@@ -35,16 +35,49 @@ const AdminContextProvider = (props) => {
     try {
       const { data } = await axios.post(
         backendUrl + "/api/admin/change-availability",
-        {docId},
+        { docId },
         { headers: { aToken } }
       );
 
       if (data.success) {
-        toast.success(data.message)
-        getAllDoctors()
-        
+        toast.success(data.message);
+        getAllDoctors();
       } else {
         toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const getAllAppointment = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + "/api/admin/appointments", {
+        headers: { aToken },
+      });
+      if (data.success) {
+        setAppointments(data.appoints);
+        console.log(appointments);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const cancelAppointment = async (appointmentId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/admin/cancel-appointment",
+        { appointmentId },
+        { headers: { aToken } }
+      );
+      if (data.success) {
+        toast.success(data.message)
+        getAllAppointment()
+      }else{
+        toast.error(data.message)
       }
     } catch (error) {
       toast.error(error.message);
@@ -57,7 +90,11 @@ const AdminContextProvider = (props) => {
     backendUrl,
     getAllDoctors,
     doctors,
-    changeAvailability
+    changeAvailability,
+    appointments,
+    setAppointments,
+    getAllAppointment,
+    cancelAppointment
   };
 
   return (
