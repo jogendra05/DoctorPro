@@ -9,22 +9,33 @@ import Dashboard from './pages/Admin/Dashboard'
 import AllAppointment from "./pages/Admin/AllAppointment";
 import AddDoctors from "./pages/Admin/AddDoctors";
 import DoctorsList from "./pages/Admin/DoctorsList";
-// import 'react-toastify/dist/ReactToastify.css'
+import { DoctorContext } from "./contexts/DoctorContext";
+import DoctorAppointment from "./pages/Doctor/DoctorAppointment";
+import DoctorDashboard from "./pages/Doctor/DoctorDashboard";
+import DoctorProfile from "./pages/Doctor/DoctorProfile";
 
 const App = () => {
   const { aToken } = useContext(AdminContext);
-  return aToken ? (
+  const {dToken} = useContext(DoctorContext)
+  console.log("this is" , dToken)
+  return aToken || dToken ? (
     <div className="bg-[#F8F9FD]">
       <ToastContainer />
       <Navbar/>
       <div className="flex items-start">
         <Slidebar/>
         <Routes>
+          {/* Admin routes */}
           <Route path="/" element={<></>}/>
           <Route path="/admin-dashboard" element={<Dashboard/>}/>
           <Route path="/all-appointment" element={<AllAppointment/>}/>
           <Route path="/add-doctor" element={<AddDoctors/>}/>
           <Route path="/doctor-list" element={<DoctorsList/>}/>
+
+          {/* Doctor routes */}
+          <Route path="/doctor-dashboard" element={<DoctorDashboard/>}/>
+          <Route path="/doctor-appointments" element={<DoctorAppointment/>}/>
+          <Route path="/doctor-profile" element={<DoctorProfile/>}/>
         </Routes>
       </div>
     </div>
