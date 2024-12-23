@@ -1,34 +1,60 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const MyAppointment = () => {
-  const { doctors } = useContext(AppContext);
+  const { token, backendUrl } = useContext(AppContext);
+  const [appointment, setAppointment] = useState([])
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  
+  const slotDateFormat = (slotDate) => {
+    const arr = slotDate.split('_')
+    return arr[0] + " " + months[Number(arr[1])-1] + " " + arr[2]
+  }
+  const getUserAppointment = ( async () => {
+    try {
+      const {data} = await axios.get(backendUrl + '/api/user/appointments', {headers: {token}})
+      if(data.success){
+        setAppointment(data.appointment.reverse())
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  })
 
-  return (
+  useEffect(() => {
+    if (token) {
+      getUserAppointment()
+    }
+  }, [token])
+
+  return  (
     <div>
       <p className="pb-3 mt-12 font-medium text-zinc-700 border-b">
         My appointments
       </p>
       <div>
-        {doctors.slice(0, 3).map((item, index) => (
+        {appointment.map((item, index) => (
           <div
             className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b"
             key={index}
           >
             <div>
-              <img className="w-32 bg-indigo-50" src={item.image} alt="" />
+              <img className="w-32 bg-indigo-50" src={item.docData.image} alt="" />
             </div>
             <div className="text-sm text-zinc-600 flex-1">
-              <p className="text-neutral-800 font-semibold">{item.name}</p>
-              <p>{item.speciality}</p>
+              <p className="text-neutral-800 font-semibold">{item.docData.name}</p>
+              <p>{item.docData.speciality}</p>
               <p className="text-zinc-700 font-medium mt-1">Address: </p>
-              <p className="text-xs">{item.address.line1}</p>
-              <p className="text-xs">{item.address.line2}</p>
+              <p className="text-xs">{item.docData.address.line1}</p>
+              <p className="text-xs">{item.docData.address.line2}</p>
               <p className="text-xs mt-1">
                 <span className="text-sm text-neutral-700 font-medium">
                   Date & Time:
                 </span>{" "}
-                16, Dec, 2024 | 8:30 PM
+                {slotDateFormat(item.slotDate)} | {item.slotTime}
               </p>
             </div>
             <div></div>
