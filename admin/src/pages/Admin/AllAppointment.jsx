@@ -6,8 +6,9 @@ import { AppContext } from "../../contexts/AppContext";
 import { assets } from "../../assets/assets";
 
 const AllAppointment = () => {
-  const { aToken, getAllAppointment, appointments, cancelAppointment } = useContext(AdminContext);
-  const {calculateAge, slotDateFormat, currency} = useContext(AppContext)
+  const { aToken, getAllAppointment, appointments, cancelAppointment } =
+    useContext(AdminContext);
+  const { calculateAge, slotDateFormat, currency } = useContext(AppContext);
 
   useEffect(() => {
     if (aToken) {
@@ -20,8 +21,10 @@ const AllAppointment = () => {
         <p className="mb-3 text-lg font-medium">AllAppointment</p>
 
         <div className="bg-white border rounded text-sm max-h-[80vh] min-h-[60vh] overflow-y-scroll">
-          <div className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] grid-flow-col 
-          px-6 py-3 border-b font-semibold">
+          <div
+            className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] grid-flow-col 
+          px-6 py-3 border-b font-semibold"
+          >
             <p>#</p>
             <p>Patient</p>
             <p>Age</p>
@@ -40,26 +43,45 @@ const AllAppointment = () => {
             >
               <p className="max-sm:hidden">{index + 1}</p>
               <div className="flex items-center gap-2">
-                <img className="w-8 rounded-full" src={item.userData.image} alt="" />
+                <img
+                  className="w-8 rounded-full"
+                  src={item.userData.image}
+                  alt=""
+                />
                 <p>{item.userData.name}</p>
               </div>
               <p className="max-sm:hidden">{calculateAge(item.userData.dob)}</p>
-              <p>{slotDateFormat(item.slotDate)}, {item.slotTime}</p>
+              <p>
+                {slotDateFormat(item.slotDate)}, {item.slotTime}
+              </p>
               <div className="flex items-center gap-2">
-                <img className="w-8 rounded-full bg-gray-200" src={item.docData.image} alt="" />
-              <p>{item.docData.name}</p>
+                <img
+                  className="w-8 rounded-full bg-gray-200"
+                  src={item.docData.image}
+                  alt=""
+                />
+                <p>{item.docData.name}</p>
               </div>
-              <p>{currency}{item.docData.fees}</p>
-              {
-                item.cancelled ? 
+              <p>
+                {currency}
+                {item.docData.fees}
+              </p>
+              {item.cancelled ? (
                 <p className="text-red-400 text-xs font-medium">Cancelled</p>
-                :<img onClick={() => cancelAppointment(item._id)} className="w-10 cursor-pointer" src={assets.cancel_icon} alt="" />
-               
-              }
+              ) : item.isCompleted ? (
+                <p className="text-green-500 text-xs font-medium">Completed</p>
+              ) : (
+                <img
+                  onClick={() => cancelAppointment(item._id)}
+                  className="w-10 cursor-pointer"
+                  src={assets.cancel_icon}
+                  alt=""
+                />
+              )}
             </div>
           ))}
         </div>
-      </div> 
+      </div>
     )
   );
 };
