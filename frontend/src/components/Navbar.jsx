@@ -34,6 +34,10 @@ const Navbar = () => {
           <li className="py-1">ALL DOCTORS</li>
           <hr className="border-none outline-none h-0.5 bg-[#5f6fff] w-3/5 m-auto hidden" />
         </NavLink>
+        <NavLink to="/diabetes-prediction">
+          <li className="py-1">HEALTH CHECK</li>
+          <hr className="border-none outline-none h-0.5 bg-[#5f6fff] w-3/5 m-auto hidden" />
+        </NavLink>
         <NavLink to="about">
           <li className="py-1">ABOUT</li>
           <hr className="border-none outline-none h-0.5 bg-[#5f6fff] w-3/5 m-auto hidden" />
@@ -102,6 +106,9 @@ const Navbar = () => {
             </NavLink>
             <NavLink onClick={() => setShowMenu(false)} to="/doctors">
               <p className="px-4 py-2 rounded inline-block">ALL DOCTORS</p>
+            </NavLink>
+            <NavLink onClick={() => setShowMenu(false)} to="/diabetes-prediction">
+              <p className="px-4 py-2 rounded inline-block">HEALTH CHECK</p>
             </NavLink>
             <NavLink onClick={() => setShowMenu(false)} to="/about">
               <p className="px-4 py-2 rounded inline-block">ABOUT</p>

@@ -1,13 +1,15 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Home, Doctors, Login, About, MyAppointment, MyProfile, Contact, Appointment } from './pages/index.js'
+import { Home, Doctors, Login, About, MyAppointment, MyProfile, Contact, Appointment, HealthCheck, DiabetesPrediction, HeartDiseasePrediction, KidneyDiseasePrediction } from './pages/index.js'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
+import SlidebarHealthCheck from './components/SlidebarHealthCheck';
 import { ToastContainer, toast } from "react-toastify";
 
 const App = () => {
   return (
     <div className="mx-4 sm:mx-[10%]">
+      
       <ToastContainer />
       <Navbar/>
       <Routes>
@@ -20,10 +22,20 @@ const App = () => {
         <Route path='/my-profile' element={<MyProfile/>} />
         <Route path='/contact' element={<Contact/>} />
         <Route path='/appointment/:docId' element={<Appointment/>} />
+        {/* <Route path='/health-check' element={<HealthCheck/>} /> */}
+      
+      
+        <Route path='/diabetes-prediction' element={<DiabetesPrediction/>}/>
+        <Route path='/heart-disease-prediction' element={<HeartDiseasePrediction/>}/>
+        <Route path='/kidney-disease-prediction' element={<KidneyDiseasePrediction/>}/>
+     
+        
+
       </Routes>
       <Footer/>
     </div>
   )
 }
+
 
 export default App

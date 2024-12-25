@@ -6,6 +6,10 @@ import Contact from './Contact.jsx'
 import Login from './Login.jsx'
 import MyAppointment from './MyAppointment.jsx'
 import MyProfile from './MyProfile.jsx'
+import HealthCheck from './HealthCheck.jsx'
+import DiabetesPrediction from '../components/DiabetesPrediction';
+import HeartDiseasePrediction from '../components/HeartDiseasePrediction';
+import KidneyDiseasePrediction from '../components/KidneyDiseasePrediction';
 
 export {
     Home,
@@ -15,5 +19,6 @@ export {
     Contact,
     Login,
     MyAppointment,
-    MyProfile
+    MyProfile,
+    HealthCheck,DiabetesPrediction, HeartDiseasePrediction, KidneyDiseasePrediction
 }
