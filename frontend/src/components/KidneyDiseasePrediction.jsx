@@ -1,195 +1,236 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import SlidebarHealthCheck from "./SlidebarHealthCheck";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-const KidneyDiseasePrediction = () => {
-  const [isVisible, setIsVisible] = useState(false);
+const DiabetesPrediction = () => {
+  const [active, setActive] = useState(true);
+  const [msg1, setMsg1] = useState({})
+  const {backendUrl} = useContext(AppContext)
 
-  const showMessage = () => setIsVisible(true);
+  const [formData, setFormData] = useState({
+    heightCm: "",
+    weightKg: "",
+    Urination: "",
+    Excessive_Thirst: "",
+    Fatigue: "",
+    Hunger: "",
+    family_history: "",
+  });
+
+  const [additional, setAdditional] = useState({
+    bloodPressure: "",
+    glucoseLevel: "",
+    pregnancies: "",
+    skinThickness: "",
+    insulin: "",
+    bmi: "",
+    diabetesPedigree: "",
+    age: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleAdditional = (e) => {
+    const { name, value } = e.target;
+    setAdditional({
+      ...additional,
+      [name]: value,
+    });
+  };
+
+  const diaGen = async (e) => {
+    e.preventDefault()
+    try {
+      const {data} = await axios.post(backendUrl + '/api/user/diabetes-prediction', formData)
+      if (data.success) {
+        setMsg1(data)
+        console.log(data)
+      }else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  }
+
   return (
     <div className="flex">
       <div>
         <SlidebarHealthCheck />
       </div>
 
-      <div className="mt-6 sm:mt-9 sm:mx-10">
-        <form className="flex flex-wrap gap-4 justify-center max-w-[900px] mx-auto">
-          {/* Age */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Age</p>
-            <input className="border rounded py-1 px-2 w-full" type="number" />
+      <div className="w-full m-5 text-gray-600">
+        <div className=" sm:w-3/4 bg-gray-200 flex sm:mx-auto flex-col rounded-lg shadow-inner max-w-[750px]">
+          <div>
+            <button
+              onClick={() => setActive(true)}
+              className={`w-1/2 ${
+                active ? "bg-primary text-white" : ""
+              } rounded-lg py-1 transition-all duration-200`}
+            >
+              Button1
+            </button>
+            <button
+              onClick={() => setActive(false)}
+              className={`w-1/2 ${
+                !active ? "bg-primary text-white" : ""
+              } rounded-lg py-1 transition-all duration-200`}
+            >
+              Button2
+            </button>
           </div>
+        </div>
 
-          {/* Blood Pressure */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Blood Pressure</p>
-            <input className="border rounded py-1 px-2 w-full" type="number" />
-          </div>
+         
+          <div className="mt-6 sm:mt-9 sm:mx-10">
+            <form onSubmit={diaGen} className="flex flex-col gap-4 sm:gap-8 max-w-[900px] mx-auto">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center w-full flex-1">
+                <div className="w-[90%] sm:w-[30%] h-[42px] mx-auto sm:m-0">
+                  <p>Height (cm)</p>
+                  <input
+                    className="border rounded py-2 px-2 w-full"
+                    type="number"
+                    name="heightCm"
+                    value={formData.heightCm}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          {/* Specific Gravity */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Specific Gravity</p>
-            <input className="border rounded py-1 px-2 w-full" type="number" />
-          </div>
+                <div className="w-[90%] sm:w-[30%] h-[42px] mx-auto mt-3.5 sm:m-0">
+                  <p>Weight (kg)</p>
+                  <input
+                    className="border rounded py-2 px-2 w-full"
+                    type="number"
+                    name="weightKg"
+                    value={formData.weightKg}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-          {/* Red Blood Cells */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Red Blood Cells</p>
-            <select className="border rounded py-1 px-2 w-full">
-              <option disabled hidden>
-                Select
-              </option>
-              <option value="Normal">Normal</option>
-              <option value="Abnormal">Abnormal</option>
-            </select>
-          </div>
+                <div className="w-[90%] sm:w-[30%] h-[42px] mx-auto mt-3.5 sm:m-0">
+                  <p>Urination</p>
+                  <select
+                    className="border rounded py-2 px-3 w-full h-full"
+                    name="Urination"
+                    value={formData.Urination}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option disabled value="">
+                      Select
+                    </option>
+                    <option value="Excessive Urination">
+                      Excessive Urination
+                    </option>
+                    <option value="Frequent Urination">
+                      Frequent Urination
+                    </option>
+                    <option value="Normal">
+                      Normal
+                    </option>
+                  </select>
+                </div>
+              </div>
 
-          {/* Pus Cells */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Pus Cells</p>
-            <select className="border rounded py-1 px-2 w-full">
-              <option disabled hidden>
-                Select
-              </option>
-              <option value="Normal">Normal</option>
-              <option value="Abnormal">Abnormal</option>
-            </select>
-          </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center flex-1">
+                <div className="w-[90%] sm:w-[30%] h-[42px] mx-auto mt-3.5 sm:mx-0">
+                  <p>Excessive Thirst</p>
+                  <select
+                    className="border rounded py-2 px-3 w-full h-full"
+                    name="Excessive_Thirst"
+                    value={formData.Excessive_Thirst}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option disabled value="">
+                      Select
+                    </option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
 
-          {/* Pus Cell Clumps */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Pus Cell Clumps</p>
-            <select className="border rounded py-1 px-2 w-full">
-              <option disabled hidden>
-                Select
-              </option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
+                <div className="w-[90%] sm:w-[30%] h-[42px] mx-auto mt-3.5 sm:mx-0">
+                  <p>Fatigue</p>
+                  <select
+                    className="border rounded py-2 px-3 w-full h-full"
+                    name="Fatigue"
+                    value={formData.Fatigue}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option disabled value="">
+                      Select
+                    </option>
+                    <option value="High">High</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
 
-          {/* Blood Urea */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Blood Urea</p>
-            <input className="border rounded py-1 px-2 w-full" type="number" />
-          </div>
+                <div className="w-[90%] sm:w-[30%] h-[42px] mx-auto mt-3.5 sm:mx-0">
+                  <p>Hunger</p>
+                  <select
+                    className="border rounded py-2 px-3 w-full h-full"
+                    name="Hunger"
+                    value={formData.Hunger}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option disabled value="">
+                      Select
+                    </option>
+                    <option value="Normal">Normal</option>
+                    <option value="More than Normal">More than Normal</option>
+                    <option value="Excessive">Excessive</option>
+                  </select>
+                </div>
+              </div>
 
-          {/* Serum Creatinine */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Serum Creatinine</p>
-            <input className="border rounded py-1 px-2 w-full" type="number" />
-          </div>
+              <div className="flex flex-col justify-center flex-1 w-full">
+                <div className="w-[90%] sm:w-[95%] h-[42px] mx-auto mt-3.5">
+                  <p>Family History of Heart Disease</p>
+                  <select
+                    className="border rounded py-2 px-3 w-full h-full"
+                    name="family_history"
+                    value={formData.family_history}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option disabled value="">
+                      Select
+                    </option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+              </div>
 
-          {/* Sodium */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Sodium</p>
-            <input className="border rounded py-1 px-2 w-full" type="number" />
+              <div className="flex flex-col sm:flex-row mt-8 sm:mt-6 items-center gap-8 ">
+                <button type="submit" className="bg-primary text-white w-32 py-1 rounded-full sm:ml-4">
+                  Predict
+                </button>
+                <p className="border px-4 py-1 border-red-300 bg-red-100 text-red-700 rounded-lg">
+                  This is the msg
+                </p>
+              </div>
+            </form>
           </div>
-
-          {/* Potassium */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Potassium</p>
-            <input className="border rounded py-1 px-2 w-full" type="number" />
-          </div>
-
-          {/* Hemoglobin */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Hemoglobin</p>
-            <input className="border rounded py-1 px-2 w-full" type="number" />
-          </div>
-
-          {/* Blood Glucose Random */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Blood Glucose Random</p>
-            <input className="border rounded py-1 px-2 w-full" type="number" />
-          </div>
-
-          {/* Bacteria */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Bacteria</p>
-            <select className="border rounded py-1 px-2 w-full">
-              <option disabled hidden>
-                Select
-              </option>
-              <option value="Present">Present</option>
-              <option value="Absent">Absent</option>
-            </select>
-          </div>
-
-          {/* Hypertension */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Hypertension</p>
-            <select className="border rounded py-1 px-2 w-full">
-              <option disabled hidden>
-                Select
-              </option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-
-          {/* Diabetes Mellitus */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Diabetes Mellitus</p>
-            <select className="border rounded py-1 px-2 w-full">
-              <option disabled hidden>
-                Select
-              </option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-
-          {/* Coronary Artery Disease */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Coronary Artery Disease</p>
-            <select className="border rounded py-1 px-2 w-full">
-              <option disabled hidden>
-                Select
-              </option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-
-          {/* Appetite */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Appetite</p>
-            <select className="border rounded py-1 px-2 w-full">
-              <option disabled hidden>
-                Select
-              </option>
-              <option value="Good">Good</option>
-              <option value="Poor">Poor</option>
-            </select>
-          </div>
-
-          {/* Pedal Edema */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Pedal Edema</p>
-            <select className="border rounded py-1 px-2 w-full">
-              <option disabled hidden>
-                Select
-              </option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-
-          {/* Anemia */}
-          <div className="w-full sm:w-[30%] lg:w-[22%]">
-            <p className="text-sm">Anemia</p>
-            <select className="border rounded py-1 px-2 w-full">
-              <option disabled hidden>
-                Select
-              </option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-        </form>
+        
       </div>
     </div>
   );
 };
 
-export default KidneyDiseasePrediction;
+export default DiabetesPrediction;

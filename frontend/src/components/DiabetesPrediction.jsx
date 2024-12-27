@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import SlidebarHealthCheck from "./SlidebarHealthCheck";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const DiabetesPrediction = () => {
   const [active, setActive] = useState(true);
+  const [msg1, setMsg1] = useState(false)
+  const {backendUrl} = useContext(AppContext)
 
   const [formData, setFormData] = useState({
-    height: "",
-    weight: "",
-    urination: "",
-    nonHealingWound: "",
-    blurredVision: "",
-    hunger: "",
-    familyHistory: "",
+    heightCm: "",
+    weightKg: "",
+    Urination: "",
+    Excessive_Thirst: "",
+    Fatigue: "",
+    Hunger: "",
+    family_history: "",
   });
 
   const [additional, setAdditional] = useState({
@@ -40,6 +45,22 @@ const DiabetesPrediction = () => {
       [name]: value,
     });
   };
+
+  const diaGen = async (e) => {
+    e.preventDefault()
+    try {
+      const {data} = await axios.post(backendUrl + '/api/user/diabetes-prediction', formData)
+      if (data.success) {
+        setMsg1(data)
+        console.log(data)
+      }else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  }
 
   return (
     <div className="flex">
@@ -71,15 +92,15 @@ const DiabetesPrediction = () => {
 
         {active ? (
           <div className="mt-6 sm:mt-9 sm:mx-10">
-            <form className="flex flex-col gap-4 sm:gap-8 max-w-[900px] mx-auto">
+            <form onSubmit={diaGen} className="flex flex-col gap-4 sm:gap-8 max-w-[900px] mx-auto">
               <div className="flex flex-col sm:flex-row gap-4 justify-center w-full flex-1">
                 <div className="w-[90%] sm:w-[30%] h-[42px] mx-auto sm:m-0">
                   <p>Height (cm)</p>
                   <input
                     className="border rounded py-2 px-2 w-full"
                     type="number"
-                    name="height"
-                    value={formData.height}
+                    name="heightCm"
+                    value={formData.heightCm}
                     onChange={handleChange}
                     required
                   />
@@ -90,8 +111,8 @@ const DiabetesPrediction = () => {
                   <input
                     className="border rounded py-2 px-2 w-full"
                     type="number"
-                    name="weight"
-                    value={formData.weight}
+                    name="weightKg"
+                    value={formData.weightKg}
                     onChange={handleChange}
                     required
                   />
@@ -101,8 +122,8 @@ const DiabetesPrediction = () => {
                   <p>Urination</p>
                   <select
                     className="border rounded py-2 px-3 w-full h-full"
-                    name="urination"
-                    value={formData.urination}
+                    name="Urination"
+                    value={formData.Urination}
                     onChange={handleChange}
                     required
                   >
@@ -115,43 +136,46 @@ const DiabetesPrediction = () => {
                     <option value="Frequent Urination">
                       Frequent Urination
                     </option>
+                    <option value="Normal">
+                      Normal
+                    </option>
                   </select>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center flex-1">
                 <div className="w-[90%] sm:w-[30%] h-[42px] mx-auto mt-3.5 sm:mx-0">
-                  <p>Non healing wound</p>
+                  <p>Excessive Thirst</p>
                   <select
                     className="border rounded py-2 px-3 w-full h-full"
-                    name="nonHealingWound"
-                    value={formData.nonHealingWound}
+                    name="Excessive_Thirst"
+                    value={formData.Excessive_Thirst}
                     onChange={handleChange}
                     required
                   >
                     <option disabled value="">
                       Select
                     </option>
-                    <option value="Sensations">Sensations</option>
-                    <option value="More infections">More infections</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                   </select>
                 </div>
 
                 <div className="w-[90%] sm:w-[30%] h-[42px] mx-auto mt-3.5 sm:mx-0">
-                  <p>Blurred vision</p>
+                  <p>Fatigue</p>
                   <select
                     className="border rounded py-2 px-3 w-full h-full"
-                    name="blurredVision"
-                    value={formData.blurredVision}
+                    name="Fatigue"
+                    value={formData.Fatigue}
                     onChange={handleChange}
                     required
                   >
                     <option disabled value="">
                       Select
                     </option>
-                    <option value="Blurred">Blurred</option>
+                    <option value="High">High</option>
                     <option value="Moderate">Moderate</option>
-                    <option value="Clear">Clear</option>
+                    <option value="No">No</option>
                   </select>
                 </div>
 
@@ -159,8 +183,8 @@ const DiabetesPrediction = () => {
                   <p>Hunger</p>
                   <select
                     className="border rounded py-2 px-3 w-full h-full"
-                    name="hunger"
-                    value={formData.hunger}
+                    name="Hunger"
+                    value={formData.Hunger}
                     onChange={handleChange}
                     required
                   >
@@ -179,8 +203,8 @@ const DiabetesPrediction = () => {
                   <p>Family History of Heart Disease</p>
                   <select
                     className="border rounded py-2 px-3 w-full h-full"
-                    name="familyHistory"
-                    value={formData.familyHistory}
+                    name="family_history"
+                    value={formData.family_history}
                     onChange={handleChange}
                     required
                   >
@@ -194,12 +218,14 @@ const DiabetesPrediction = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row mt-8 sm:mt-6 items-center gap-8 ">
-                <button className="bg-primary text-white w-32 py-1 rounded-full sm:ml-4">
+                <button type="submit" className="bg-primary text-white w-32 py-1 rounded-full sm:ml-4">
                   Predict
                 </button>
-                <p className="border px-4 py-1 border-red-300 bg-red-100 text-red-700 rounded-lg">
-                  This is the msg
+                { msg1 ? <p className="border px-4 py-1 border-red-300 bg-red-100 text-red-700 rounded-lg">
+                  {msg1.riskCategory} {msg1.message}
                 </p>
+                : <p></p>  
+              }
               </div>
             </form>
           </div>
