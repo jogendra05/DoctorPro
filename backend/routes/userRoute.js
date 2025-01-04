@@ -10,7 +10,7 @@ import {
 } from "../controllers/userController.js";
 import userAuth from "../middlewares/authUser.js";
 import upload from "../middlewares/multer.js";
-import { diabetesGeneral } from "../controllers/diseaseController.js";
+import { diabetesGeneral, heartAttackRisk } from "../controllers/diseaseController.js";
 
 const userRouter = express.Router();
 
@@ -27,5 +27,6 @@ userRouter.post("/book-appointment", userAuth, bookAppointment);
 userRouter.get("/appointments", userAuth, listAppointment);
 userRouter.post("/cancel-appointment", userAuth, cancelAppointment)
 userRouter.post('/diabetes-prediction', diabetesGeneral)
+userRouter.post('/heart-prediction', heartAttackRisk)
 
 export default userRouter;

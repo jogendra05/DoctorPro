@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import SlidebarHealthCheck from "./SlidebarHealthCheck";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const HeartDiseasePrediction = () => {
   const [active, setActive] = useState(true);
+  const [msg1, setMsg1] = useState(false);
+  const { backendUrl } = useContext(AppContext);
 
   const [general, setGeneral] = useState({
     height: "",
@@ -37,24 +42,31 @@ const HeartDiseasePrediction = () => {
     setGeneral({ ...general, [name]: value });
   };
 
-  const handleGeneral = (e) => {
-    e.preventDefault();
-    console.log("Form Data:", general);
-    // Add form submission logic here
-  };
-
-  const handleAdditional = (e) => {
-    e.preventDefault();
-    console.log("Additional Form Data:", additional);
-    // Perform further actions, e.g., API call
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAdditional((prev) => ({
       ...prev,
       [name]: value,
     }));
+  };
+
+  const heartGen = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/user/heart-prediction",
+        general
+      );
+      if (data.success) {
+        setMsg1(data);
+        
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -88,7 +100,7 @@ const HeartDiseasePrediction = () => {
         {active ? (
           <div className="mt-6 sm:mt-9 sm:mx-10">
             <form
-              onSubmit={handleGeneral}
+              onSubmit={heartGen}
               className="flex flex-col gap-4 sm:gap-8 max-w-[900px] mx-auto"
             >
               <div className="flex flex-col sm:flex-row gap-4 justify-center w-full flex-1">
@@ -145,7 +157,7 @@ const HeartDiseasePrediction = () => {
                     <option disabled value="">
                       Select
                     </option>
-                    <option value="Normal">Normal</option>
+                    <option value="No">No</option>
                     <option value="Elevated">Elevated</option>
                     <option value="High Pain">High Pain</option>
                   </select>
@@ -243,12 +255,27 @@ const HeartDiseasePrediction = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row mt-8 sm:mt-6 items-center gap-8 ">
-                <button className="bg-primary text-white w-32 py-1 rounded-full sm:ml-4">
+                <button
+                  type="submit"
+                  className="bg-primary text-white w-32 py-1 rounded-full sm:ml-4"
+                >
                   Predict
                 </button>
-                <p className="border px-4 py-1 border-red-300 bg-red-100 text-red-700 rounded-lg">
-                  This is the msg
-                </p>
+                {msg1 ? (
+                  <p
+                    className={`border px-4 py-1 ${
+                      msg1.riskCategory === "High Risk"
+                        ? "border-red-300 bg-red-100 text-red-700"
+                        : msg1.riskCategory === "Moderate Risk"
+                        ? "border-yellow-300 bg-yellow-100 text-yellow-700"
+                        : "border-green-300 bg-green-100 text-green-700"
+                    } rounded-lg`}
+                  >
+                    {msg1.riskCategory}!!! {msg1.message}
+                  </p>
+                ) : (
+                  <p></p>
+                )}
               </div>
             </form>
           </div>
