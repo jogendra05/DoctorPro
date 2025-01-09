@@ -53,7 +53,7 @@ const addDoctor = async (req, res) => {
         message: "Please enter a strong password",
       });
     }
-    console.log(password);
+    
     // hashing doctor password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);

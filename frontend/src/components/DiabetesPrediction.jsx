@@ -79,7 +79,7 @@ const DiabetesPrediction = () => {
                 active ? "bg-primary text-white" : ""
               } rounded-lg py-1 transition-all duration-200`}
             >
-              Button1
+              Based on Lifecycle
             </button>
             <button
               onClick={() => setActive(false)}
@@ -87,7 +87,7 @@ const DiabetesPrediction = () => {
                 !active ? "bg-primary text-white" : ""
               } rounded-lg py-1 transition-all duration-200`}
             >
-              Button2
+              Based on Report
             </button>
           </div>
         </div>
@@ -105,6 +105,7 @@ const DiabetesPrediction = () => {
                     className="border rounded py-2 px-2 w-full"
                     type="number"
                     name="heightCm"
+                    placeholder="Enter height in cm"
                     value={formData.heightCm}
                     onChange={handleChange}
                     required
@@ -117,6 +118,7 @@ const DiabetesPrediction = () => {
                     className="border rounded py-2 px-2 w-full"
                     type="number"
                     name="weightKg"
+                    placeholder="Enter weight in kg"
                     value={formData.weightKg}
                     onChange={handleChange}
                     required
@@ -362,9 +364,9 @@ const DiabetesPrediction = () => {
                 <button className="bg-primary text-white w-32 py-1 rounded-full sm:ml-4">
                   Predict
                 </button>
-                <p className="border px-4 py-1 border-red-300 bg-red-100 text-red-700 rounded-lg">
-                  This is the msg
-                </p>
+                {false && <p className="border px-4 py-1 border-red-300 bg-red-100 text-red-700 rounded-lg">
+                  
+                </p>}
               </div>
             </form>
           </div>

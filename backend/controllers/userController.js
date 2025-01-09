@@ -132,7 +132,6 @@ const updateProfile = async (req, res) => {
 const bookAppointment = async (req, res) => {
   try {
     const { userId, docId, slotDate, slotTime } = req.body;
-    console.log(docId, slotDate, slotTime);
 
     const docData = await doctorModel.findById(docId).select("-password");
     if (!docData.available) {
@@ -222,6 +221,24 @@ const cancelAppointment = async (req, res) => {
   }
 };
 
+const onlinePaid = async (req, res) => {
+  try {
+    const { userId, appointmentId } = req.body;
+    const appointmentData = await appointmentModel.findById(appointmentId);
+    if (appointmentData.userId !== userId) {
+      res.json({ success: false, message: "Unauthorized action" });
+    }
+    await appointmentModel.findByIdAndUpdate(appointmentId, {
+      payment: true,
+    });
+
+    res.json({ success: true, message: "Paid Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 
 // const razorpayInstance = new razorpay({
 //   key_id:process.env.RAZORPAY_KEY_ID,
@@ -241,4 +258,5 @@ export {
   bookAppointment,
   listAppointment,
   cancelAppointment,
+  onlinePaid
 };

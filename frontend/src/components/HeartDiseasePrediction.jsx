@@ -84,7 +84,7 @@ const HeartDiseasePrediction = () => {
                 active ? "bg-primary text-white" : ""
               } rounded-lg py-1 transition-all duration-200`}
             >
-              Button1
+              Based on Lifecycle
             </button>
             <button
               onClick={() => setActive(false)}
@@ -92,7 +92,7 @@ const HeartDiseasePrediction = () => {
                 !active ? "bg-primary text-white" : ""
               } rounded-lg py-1 transition-all duration-200`}
             >
-              Button2
+              Based on Report
             </button>
           </div>
         </div>
@@ -281,7 +281,7 @@ const HeartDiseasePrediction = () => {
           </div>
         ) : (
           <div className="mt-6 sm:mt-9 sm:mx-10">
-            <form onSubmit={handleAdditional}>
+            <form>
               <div className="flex flex-wrap gap-4 justify-center max-w-[900px] mx-auto">
                 {/* Age */}
                 <div className="w-full sm:w-[30%] lg:w-[22%]">
@@ -502,9 +502,9 @@ const HeartDiseasePrediction = () => {
                 >
                   Predict
                 </button>
-                <p className="border px-4 py-1 border-red-300 bg-red-100 text-red-700 rounded-lg">
-                  This is the msg
-                </p>
+                {false && <p className="border px-4 py-1 border-red-300 bg-red-100 text-red-700 rounded-lg">
+                  
+                </p>}
               </div>
             </form>
           </div>

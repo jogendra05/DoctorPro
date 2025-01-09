@@ -115,7 +115,6 @@ const doctorDashboard = async (req, res) => {
   try {
     const { docId } = req.body;
     const appointments = await appointmentModel.find({ docId });
-    console.log(appointments);
     let earnings = 0;
 
     for (let index = 0; index < appointments.length; index++) {

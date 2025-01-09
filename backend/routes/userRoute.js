@@ -4,6 +4,7 @@ import {
   cancelAppointment,
   getProfile,
   listAppointment,
+  onlinePaid,
   updateProfile,
   userLogin,
   userRegister,
@@ -26,6 +27,7 @@ userRouter.post(
 userRouter.post("/book-appointment", userAuth, bookAppointment);
 userRouter.get("/appointments", userAuth, listAppointment);
 userRouter.post("/cancel-appointment", userAuth, cancelAppointment)
+userRouter.post("/online-paid", userAuth, onlinePaid)
 userRouter.post('/diabetes-prediction', diabetesGeneral)
 userRouter.post('/heart-prediction', heartAttackRisk)
 
