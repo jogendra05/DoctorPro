@@ -8,6 +8,8 @@ DoctorPro is a comprehensive Doctor Appointment Management System designed to st
   Your browser does not support the video tag.
 </video>
 
+[Watch the Demo Video](./DoctorPro.mp4)
+
 ---
 
 ## Features
