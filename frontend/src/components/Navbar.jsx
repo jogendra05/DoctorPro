@@ -48,6 +48,9 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className="flex items-center gap-4">
+        <a href= {import.meta.env.VITE_ADMIN_URL} target="_blank" className="py-1 p-1 px-2 border-[1px] border-[#5f6fff] rounded-2xl">
+          Login as Doctor/Admin
+        </a>
         {token && userData ? (
           <div className="flex items-center gap-2 cursor-pointer group relative">
             <img className="w-8 rounded-full" src={userData.image} alt="" />
