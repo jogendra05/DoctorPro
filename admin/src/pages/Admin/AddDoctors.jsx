@@ -22,6 +22,9 @@ const AddDoctors = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    if (import.meta.env.VITE_IS_READ_ONLY === "true") {
+      return toast.error("This feature is read-only in the deployed version.");
+    }
 
     try {
       if (!formData.image) {

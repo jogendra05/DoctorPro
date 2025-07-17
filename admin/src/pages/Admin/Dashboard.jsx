@@ -4,6 +4,7 @@ import { AdminContext } from "../../contexts/AdminContext";
 import { useEffect } from "react";
 import { assets } from "../../assets/assets";
 import { AppContext } from "../../contexts/AppContext";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const { aToken, cancelAppointment, dashData, getDashData } =
@@ -15,7 +16,15 @@ const Dashboard = () => {
     if (aToken) {
       getDashData();
     }
-  }, [aToken, dashData]);
+  }, [aToken]);
+
+  const isReadOnly = (id) => {
+    if (import.meta.env.VITE_IS_READ_ONLY === "true") {
+      toast.error("This feature is read-only in the deployed version.");
+    } else {
+      cancelAppointment(id);
+    }
+  };
 
   return (
     dashData && (
@@ -85,7 +94,7 @@ const Dashboard = () => {
                   </p>
                 ) : (
                   <img
-                    onClick={() => cancelAppointment(item._id)}
+                    onClick={() => isReadOnly(item._id)}
                     className="w-10 cursor-pointer"
                     src={assets.cancel_icon}
                     alt=""

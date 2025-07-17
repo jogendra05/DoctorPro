@@ -4,6 +4,7 @@ import { DoctorContext } from "../../contexts/DoctorContext";
 import { useEffect } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import { assets } from "../../assets/assets";
+import { toast } from "react-toastify";
 
 const DoctorAppointment = () => {
   const {
@@ -18,6 +19,18 @@ const DoctorAppointment = () => {
   useEffect(() => {
     getAppointments();
   }, [dToken]);
+
+  const isReadOnly = (id, complete) => {
+    if (import.meta.env.VITE_IS_READ_ONLY === "true") {
+      toast.error("This feature is read-only in the deployed version.");
+    } else {
+      if (complete) {
+        completeAppointment(id);
+      } else {
+        cancelAppointment(id);
+      }
+    }
+  };
   return (
     appointments && (
       <div className="w-full max-w-6xl m-5">
@@ -72,17 +85,19 @@ const DoctorAppointment = () => {
                 {item.cancelled ? (
                   <p className="text-red-400 text-xs font-medium">Cancelled</p>
                 ) : item.isCompleted ? (
-                  <p className="text-green-500 text-xs font-medium">Completed</p>
+                  <p className="text-green-500 text-xs font-medium">
+                    Completed
+                  </p>
                 ) : (
                   <div className="flex">
                     <img
-                      onClick={() => cancelAppointment(item._id)}
+                      onClick={() => isReadOnly(item._id, false)}
                       className="w-10 cursor-pointer"
                       src={assets.cancel_icon}
                       alt=""
                     />
                     <img
-                      onClick={() => completeAppointment(item._id)}
+                      onClick={() => isReadOnly(item._id, true)}
                       className="w-10 cursor-pointer"
                       src={assets.tick_icon}
                       alt=""

@@ -4,10 +4,18 @@ import { DoctorContext } from "../../contexts/DoctorContext";
 import { useEffect } from "react";
 import { assets } from "../../assets/assets";
 import { AppContext } from "../../contexts/AppContext";
+import { toast } from "react-toastify";
 
 const DoctorDashboard = () => {
-  const { dToken, getDashData, dashData, setDashData, currency, cancelAppointment,completeAppointment } =
-    useContext(DoctorContext);
+  const {
+    dToken,
+    getDashData,
+    dashData,
+    setDashData,
+    currency,
+    cancelAppointment,
+    completeAppointment,
+  } = useContext(DoctorContext);
   const { slotDateFormat } = useContext(AppContext);
 
   useEffect(() => {
@@ -15,6 +23,20 @@ const DoctorDashboard = () => {
       getDashData();
     }
   }, [dToken]);
+
+  const isReadOnly = (id, complete) => {
+    if (import.meta.env.VITE_IS_READ_ONLY === "true") {
+      toast.error("This feature is read-only in the deployed version.");
+    } else {
+      if (complete) {
+        completeAppointment(id);
+      }
+      else {
+        cancelAppointment(id);
+      }
+    }
+  };
+
   return (
     dashData && (
       <div className="m-5">
@@ -85,13 +107,13 @@ const DoctorDashboard = () => {
                 ) : (
                   <div className="flex">
                     <img
-                      onClick={() => cancelAppointment(item._id)}
+                      onClick={() => isReadOnly(item._id, false)}
                       className="w-10 cursor-pointer"
                       src={assets.cancel_icon}
                       alt=""
                     />
                     <img
-                      onClick={() => completeAppointment(item._id)}
+                      onClick={() => isReadOnly(item._id, true)}
                       className="w-10 cursor-pointer"
                       src={assets.tick_icon}
                       alt=""

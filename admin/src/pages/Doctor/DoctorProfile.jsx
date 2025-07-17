@@ -50,6 +50,15 @@ const DoctorProfile = () => {
     }
   }, [dToken]);
 
+  const isReadOnly = () => {
+    if (import.meta.env.VITE_IS_READ_ONLY === "true") {
+      toast.error("This feature is read-only in the deployed version.");
+    }
+    else {
+      setIsEdit(true);
+    }
+  }
+
   return (
     profileData && (
       <div>
@@ -165,7 +174,7 @@ const DoctorProfile = () => {
               </button>
             ) : (
               <button
-                onClick={() => setIsEdit(true)}
+                onClick={isReadOnly}
                 className="px-4 py-1 border border-primary text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all"
               >
                 Edit

@@ -4,6 +4,7 @@ import { AdminContext } from "../../contexts/AdminContext";
 import { useEffect } from "react";
 import { AppContext } from "../../contexts/AppContext";
 import { assets } from "../../assets/assets";
+import { toast } from "react-toastify";
 
 const AllAppointment = () => {
   const { aToken, getAllAppointment, appointments, cancelAppointment } =
@@ -15,6 +16,15 @@ const AllAppointment = () => {
       getAllAppointment();
     }
   }, [aToken]);
+
+  const isReadOnly = (id) => {
+      if (import.meta.env.VITE_IS_READ_ONLY === "true") {
+        toast.error("This feature is read-only in the deployed version.");
+      }
+      else {
+        cancelAppointment(id);
+      }
+    }
   return (
     appointments && (
       <div className="w-full max-w-6xl m-5">
@@ -72,7 +82,7 @@ const AllAppointment = () => {
                 <p className="text-green-500 text-xs font-medium">Completed</p>
               ) : (
                 <img
-                  onClick={() => cancelAppointment(item._id)}
+                  onClick={() => isReadOnly(item._id)}
                   className="w-10 cursor-pointer"
                   src={assets.cancel_icon}
                   alt=""

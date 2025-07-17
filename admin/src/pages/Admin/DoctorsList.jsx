@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { AdminContext } from "../../contexts/AdminContext";
+import { toast } from "react-toastify";
 
 const DoctorsList = () => {
   const {  aToken, doctors, getAllDoctors, changeAvailability } =
@@ -10,7 +11,13 @@ const DoctorsList = () => {
     console.log(doctors);
   }, [aToken]);
 
-
+  const isReadOnly = (id) => {
+    if (import.meta.env.VITE_IS_READ_ONLY === "true") {
+      return toast.error("This feature is read-only in the deployed version.");
+    } else {
+      changeAvailability(id);
+    }
+  };
 
 
   return (
@@ -27,7 +34,7 @@ const DoctorsList = () => {
               <p className="text-zinc-600 text-sm">{item.speciality}</p>
 
               <div className="mt-2 flex items-center gap-1 text-sm">
-                <input onChange={() => changeAvailability(item._id)} type="checkbox" checked={item.available} />
+                <input onChange={() => isReadOnly(item._id)} type="checkbox" checked={item.available} />
                 <p>Available</p>
               </div>
             </div>
