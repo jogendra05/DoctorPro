@@ -3,6 +3,10 @@
 ## Project Overview
 DoctorPro is a comprehensive Doctor Appointment Management System designed to streamline the interaction between users, doctors, and administrators. The application features distinct panels for users, doctors, and admins, making the system intuitive and highly functional. The project is built with the MERN stack, styled using Tailwind CSS, and includes integrated machine learning models to predict diseases like diabetes and heart attack based on user life cycle or medical reports. The system is responsive and works seamlessly across all screen sizes.
 
+## 🚀 Demo
+
+Check out the live demo here: [Demo](https://doctor-prime.onrender.com)
+
 <video controls>
   <source src="DoctorPro.mp4" type="video/mp4">
   Your browser does not support the video tag.
