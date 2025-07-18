@@ -40,6 +40,8 @@ import Diabetes from './sugar-blood-level.png'
 import Heart from './pulse.png'
 import kidney from './kidney.png'
 
+console.log('Derm:', Dermatologist)
+console.log('Neuro:', Neurologist)
 
 export const assets = {
     appointment_img,
