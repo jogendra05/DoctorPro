@@ -8,7 +8,6 @@ const DoctorsList = () => {
 
   useEffect(() => {
     getAllDoctors();
-    console.log(doctors);
   }, [aToken]);
 
   const isReadOnly = (id) => {
