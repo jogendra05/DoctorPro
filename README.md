@@ -5,7 +5,7 @@ DoctorPro is a comprehensive Doctor Appointment Management System designed to st
 
 ## 🚀 Demo
 
-Check out the live demo here: [Demo](https://doctor-pro.onrender.com)
+Check out the live demo here: [Demo](https://doctor-proj.onrender.com)
 
 <video controls>
   <source src="DoctorPro.mp4" type="video/mp4">
