@@ -237,7 +237,7 @@ const HeartDiseasePrediction = () => {
                 </div>
 
                 <div className="w-[90%] sm:w-[30%] h-[42px] mx-auto mt-3.5 sm:mx-0">
-                  <p>Family History of Diabetes</p>
+                  <p>Family History of Heart Disease</p>
                   <select
                     className="border rounded py-2 px-3 w-full h-full placeholder-gray-400"
                     name="familyHistoryDiabetes"
