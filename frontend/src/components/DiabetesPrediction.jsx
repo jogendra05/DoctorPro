@@ -205,7 +205,7 @@ const DiabetesPrediction = () => {
 
               <div className="flex flex-col justify-center flex-1 w-full">
                 <div className="w-[90%] sm:w-[95%] h-[42px] mx-auto mt-3.5">
-                  <p>Family History of Heart Disease</p>
+                  <p>Family History of Diabetes</p>
                   <select
                     className="border rounded py-2 px-3 w-full h-full"
                     name="family_history"
