@@ -19,6 +19,8 @@ import SlidebarHealthCheck from "./components/SlidebarHealthCheck";
 import { ToastContainer, toast } from "react-toastify";
 import ServerAwareSection from "./components/ServerAwareSection.jsx";
 import { AppContext } from "./context/AppContext.jsx";
+import ChatWidget from "./components/ChatWidget.jsx";
+import VideoConsultation from "./components/VideoConsultation.jsx"
 
 const App = () => {
   const { getDoctorsData, backendUrl } = useContext(AppContext);
@@ -53,7 +55,9 @@ const App = () => {
           path="/heart-disease-prediction"
           element={<HeartDiseasePrediction />}
         />
+        <Route path="/consultation/:appointmentId" element={<VideoConsultation />} />
       </Routes>
+      <ChatWidget />
       <Footer />
     </div>
   );

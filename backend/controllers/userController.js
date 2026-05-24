@@ -250,6 +250,27 @@ const onlinePaid = async (req, res) => {
    
 // }
 
+const getAppointmentById = async (req, res) => {
+  try {
+    const { appointmentId } = req.params;
+
+    const appointment = await appointmentModel.findById(appointmentId);
+
+    if (!appointment) {
+      return res.json({ success: false, message: "Appointment not found" });
+    }
+
+    if (appointment.userId !== req.body.userId) {
+      return res.json({ success: false, message: "Not authorized" });
+    }
+
+    res.json({ success: true, appointment });
+
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+};
+
 export {
   userRegister,
   userLogin,
@@ -258,5 +279,6 @@ export {
   bookAppointment,
   listAppointment,
   cancelAppointment,
-  onlinePaid
+  onlinePaid, 
+  getAppointmentById
 };

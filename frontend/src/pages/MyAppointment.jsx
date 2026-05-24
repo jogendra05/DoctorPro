@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const MyAppointment = () => {
+  const navigate = useNavigate();
   const { token, backendUrl } = useContext(AppContext);
   const [appointment, setAppointment] = useState([])
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -59,7 +61,7 @@ const MyAppointment = () => {
       getUserAppointment()
     }
   }, [token])
-
+  appointment && console.log(appointment);
   return  (
     <div>
       <p className="pb-3 mt-12 font-medium text-zinc-700 border-b">
@@ -70,11 +72,13 @@ const MyAppointment = () => {
           <div
             className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b"
             key={index}
+            
           >
+            
             <div>
               <img className="w-32 bg-indigo-50" src={item.docData.image} alt="" />
             </div>
-            <div className="text-sm text-zinc-600 flex-1">
+            <div className="text-sm text-zinc-600 flex-1 cursor-pointer" onClick={() => navigate(`/consultation/${item._id}`)}>
               <p className="text-neutral-800 font-semibold">{item.docData.name}</p>
               <p>{item.docData.speciality}</p>
               <p className="text-zinc-700 font-medium mt-1">Address: </p>

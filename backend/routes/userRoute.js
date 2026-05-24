@@ -8,6 +8,7 @@ import {
   updateProfile,
   userLogin,
   userRegister,
+  getAppointmentById
 } from "../controllers/userController.js";
 import userAuth from "../middlewares/authUser.js";
 import upload from "../middlewares/multer.js";
@@ -30,5 +31,6 @@ userRouter.post("/cancel-appointment", userAuth, cancelAppointment)
 userRouter.post("/online-paid", userAuth, onlinePaid)
 userRouter.post('/diabetes-prediction', diabetesGeneral)
 userRouter.post('/heart-prediction', heartAttackRisk)
+userRouter.get('/appointment/:appointmentId', userAuth, getAppointmentById);
 
 export default userRouter;

@@ -39,6 +39,7 @@ import Pediatricians from './Pediatricians.svg'
 import Diabetes from './sugar-blood-level.png'
 import Heart from './pulse.png'
 import kidney from './kidney.png'
+import medibot from './medibot.png'
 
 export const assets = {
     appointment_img,
@@ -60,7 +61,8 @@ export const assets = {
     razorpay_logo,
     Diabetes,
     Heart,
-    kidney
+    kidney,
+    medibot
 }
 
 export const specialityData = [
