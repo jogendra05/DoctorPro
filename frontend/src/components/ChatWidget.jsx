@@ -117,6 +117,7 @@ export default function ChatWidget() {
     try {
       if (!token){
         toast.error("Login First");
+        return;
       }
       const res = await fetch(`${API_URL}/intent`, {
         method: "POST",
