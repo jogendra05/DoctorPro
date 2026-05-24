@@ -1,15 +1,13 @@
 import { useState, useRef, useEffect, useCallback, useContext } from "react";
 import { AppContext } from "../context/AppContext.jsx";
 import {assets} from "../assets/assets.js"
-  
+import { toast } from "react-toastify";
 
 
-// ─── Theme — matches Prescripto's blue-purple palette ──────────────────────
 const BRAND = "#596DF7";
 const BRAND_DARK = "#4557E8";
 const BRAND_LIGHT = "#EEF0FE";
 
-// ─── Sub-components ─────────────────────────────────────────────────────────
 
 function Avatar() {
   return (
@@ -61,7 +59,6 @@ function Message({ msg }) {
   );
 }
 
-// ─── Main Widget ─────────────────────────────────────────────────────────────
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -118,6 +115,9 @@ export default function ChatWidget() {
     setLoading(true);
 
     try {
+      if (!token){
+        toast.error("Login First");
+      }
       const res = await fetch(`${API_URL}/intent`, {
         method: "POST",
         headers: { "Content-Type": "application/json", token },
